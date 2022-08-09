@@ -14,8 +14,6 @@ import Registration from './components/Registration';
 function App() {
   return (
     <div>
-    <Header></Header>
-    
     <div className="wrapper">
       
       <Routes>
@@ -27,8 +25,6 @@ function App() {
         <Route path="/registration" element={<Registration></Registration>}></Route>
       </Routes>
     </div>
-      <Footer></Footer>
-
     </div>
   );
 }
