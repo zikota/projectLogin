@@ -10,14 +10,73 @@ import Container from '@mui/material/Container';
 import {  ThemeProvider, createTheme } from '@mui/material/styles';
 import { Grid, Avatar, FormControlLabel, Checkbox } from '@mui/material';
 import { Link } from '@mui/material';
+import { useState, useEffect } from 'react';
 
 const theme = createTheme();
 
-function handleSubmit(e) {
-  console.log('submit');
-}
-
 function Registration() {
+    const [ username, setUsername ] = useState("");
+    const [ firstName, setFirstName ] = useState("");
+    const [ lastName, setLastName ] = useState("");
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
+    const [ confirmPassword, setConfirmPassword ] = useState("");
+    const [ errors, setErrors ] = useState([]);
+    const [ formOk, setFormOk ] = useState();
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        let errorsCount = 0;
+        setErrors([]);
+        if (username.length < 6 || username.length > 12)
+        {
+          setErrors(errors => [...errors, 1]);
+          //createNotification('error', 1);
+          errorsCount++;
+        }
+          
+        if (firstName === '' ){
+          setErrors(errors => [...errors, 2]);
+          //createNotification('error', 2);
+          errorsCount++;
+        }
+          
+        if (lastName === ''){
+          setErrors(errors => [...errors, 3]);
+          //createNotification('error', 3);
+          errorsCount++;
+        }
+        if (password !== confirmPassword){
+          setErrors(errors => [...errors, 4]);
+          //createNotification('error', 4);
+          errorsCount++;
+        }
+  
+        let regexEmail = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+  
+        if (!regexEmail.test(email)) {
+          setErrors(errors => [...errors, 5]);
+          //createNotification('error', 5);
+          errorsCount++;
+        }
+  
+        let regexPass = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\^&\*])(?=.{8,})");
+        if (!regexPass.test(password))
+        {
+          setErrors(errors => [...errors, 6]);
+          //createNotification('error', 6);
+          errorsCount++;
+        }
+        if (errorsCount > 0)
+          setFormOk(false);
+        else 
+          setFormOk(true);
+    }
+
+    useEffect(()=>{
+        console.log(errors);
+    }, [errors])
+
     return (
       <div>
 
@@ -57,7 +116,6 @@ function Registration() {
                     label="Last Name"
                     name="lastName"
                     autoComplete="lastName"
-                    autoFocus
                     />
                     <TextField
                     margin="normal"
@@ -67,7 +125,6 @@ function Registration() {
                     label="Email"
                     name="email"
                     autoComplete="email"
-                    autoFocus
                     />
                     <TextField
                     margin="normal"
@@ -99,7 +156,7 @@ function Registration() {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                     >
-                    Sign In
+                    Register
                     </Button>
                     <Grid container>
                     <Grid item xs>

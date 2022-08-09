@@ -1,13 +1,8 @@
 import './App.css';
 import * as React from 'react';
 import Login from './components/Login';
-import Header from './components/Header';
 import HomePage from './components/HomePage';
-import Footer from './components/Footer'
 import { Route, Routes } from 'react-router-dom';
-import Ingredients from './components/Ingredients';
-import AboutUs from './components/AboutUs'
-import Recipes from './components/Recipes';
 
 import Registration from './components/Registration';
 

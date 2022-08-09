@@ -118,11 +118,4 @@ body {
     display: none;
   }
 }
-#bcgImage {
-  background-image: url("./bread.jpg");
-}
-#bcgImgIng {
-  background-image: url("./spicess.jpg");
-  height: '100vh' !important
-}
 
