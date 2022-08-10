@@ -11,6 +11,8 @@ import {  ThemeProvider, createTheme } from '@mui/material/styles';
 import { Grid, Avatar, FormControlLabel, Checkbox } from '@mui/material';
 import { Link } from '@mui/material';
 import { useState, useEffect } from 'react';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 const theme = createTheme();
 
@@ -22,49 +24,38 @@ function Registration() {
     const [ password, setPassword ] = useState("");
     const [ confirmPassword, setConfirmPassword ] = useState("");
     const [ errors, setErrors ] = useState([]);
-    const [ formOk, setFormOk ] = useState();
+    const [ formOk, setFormOk ] = useState(false);
 
     function handleSubmit(e) {
         e.preventDefault();
         let errorsCount = 0;
         setErrors([]);
-        if (username.length < 6 || username.length > 12)
-        {
-          setErrors(errors => [...errors, 1]);
-          //createNotification('error', 1);
-          errorsCount++;
-        }
           
         if (firstName === '' ){
-          setErrors(errors => [...errors, 2]);
-          //createNotification('error', 2);
+          setErrors(errors => [...errors, { id: 2, msg: "First Name is a required field."}]);
           errorsCount++;
         }
           
         if (lastName === ''){
-          setErrors(errors => [...errors, 3]);
-          //createNotification('error', 3);
+          setErrors(errors => [...errors, { id: 3, msg: "Last Name is a required field."}]);
           errorsCount++;
         }
         if (password !== confirmPassword){
-          setErrors(errors => [...errors, 4]);
-          //createNotification('error', 4);
+          setErrors(errors => [...errors, { id: 4, msg: "Password and Confirm Password fields must match."}]);
           errorsCount++;
         }
   
         let regexEmail = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
   
         if (!regexEmail.test(email)) {
-          setErrors(errors => [...errors, 5]);
-          //createNotification('error', 5);
+          setErrors(errors => [...errors, { id: 5, msg: "Email format is not correct."}]);
           errorsCount++;
         }
   
         let regexPass = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\^&\*])(?=.{8,})");
         if (!regexPass.test(password))
         {
-          setErrors(errors => [...errors, 6]);
-          //createNotification('error', 6);
+          setErrors(errors => [...errors, { id: 6, msg: "Password must contain 8 characters, at least one uppercase letter, at least one lowercase letter, at least 1 numeric character and at least one special character."}]);
           errorsCount++;
         }
         if (errorsCount > 0)
@@ -74,13 +65,78 @@ function Registration() {
     }
 
     useEffect(()=>{
-        console.log(errors);
+        showErrors();
     }, [errors])
+
+    useEffect ( () => {
+      if(formOk)
+      {
+        registerUser();
+      }
+    }, [formOk])
+
+    function registerUser(){ 
+
+      var formdata = new FormData();
+      formdata.append("first_name", firstName);
+      formdata.append("last_name", lastName);
+      formdata.append("photo", "slika");
+      formdata.append("password", password);
+      formdata.append("username", "pas3");
+      formdata.append("email", email);
+
+      var requestOptions = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow'
+      };
+
+      fetch("http://localhost:8000/api/register", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          console.log(result);
+          
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+
+    
+    }
+
+    function clearForm ()
+    {
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setErrors([]);
+    }
+
+    const showErrors = () => {
+      if (errors.length > 0)
+        return (
+          <Stack sx={{ width: '30%', float:'right', bottom: '0' }} spacing={2}>
+            {errors.map((error)=>{
+              return (
+                <Alert variant="outlined" severity="error">
+                  {error.msg}
+                </Alert>
+              )
+            })}
+            
+          </Stack>
+        )
+      else return;
+    }
 
     return (
       <div>
 
         <ThemeProvider theme={theme}>
+          
+        {showErrors()}
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -107,6 +163,7 @@ function Registration() {
                     name="firstName"
                     autoComplete="firstName"
                     autoFocus
+                    onChange={((e)=>{setFirstName(e.target.value)})}
                     />
                     <TextField
                     margin="normal"
@@ -116,6 +173,7 @@ function Registration() {
                     label="Last Name"
                     name="lastName"
                     autoComplete="lastName"
+                    onChange={((e)=>{setLastName(e.target.value)})}
                     />
                     <TextField
                     margin="normal"
@@ -125,6 +183,7 @@ function Registration() {
                     label="Email"
                     name="email"
                     autoComplete="email"
+                    onChange={((e)=>{setEmail(e.target.value)})}
                     />
                     <TextField
                     margin="normal"
@@ -135,6 +194,7 @@ function Registration() {
                     type="password"
                     id="password"
                     autoComplete="current-password"
+                    onChange={((e)=>{setPassword(e.target.value)})}
                     />
                     <TextField
                     margin="normal"
@@ -145,10 +205,7 @@ function Registration() {
                     type="password"
                     id="confirmPassword"
                     autoComplete="confirm-password"
-                    />
-                    <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="Remember me"
+                    onChange={((e)=>{setConfirmPassword(e.target.value)})}
                     />
                     <Button
                     type="submit"
