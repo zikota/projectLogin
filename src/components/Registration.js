@@ -140,7 +140,7 @@ function Registration() {
         {showErrors()}
             <Container component="main" maxWidth="xs">
               <br/>
-              <Link href="/" underline="none"><Button variant="outlined"> Back to Home Page </Button></Link>
+             
           
                 <CssBaseline />
                 <Box

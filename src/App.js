@@ -6,12 +6,15 @@ import { Route, Routes } from 'react-router-dom';
 import { PrivateRoute } from './components/PrivateRoute';
 import { AdminPage } from './components/AdminPage';
 import { AuthContextProvider } from "./contexts/auth";
+import Header from './components/Header'
+import Footer from './components/Footer'
 
 import Registration from './components/Registration';
 
 function App() {
   return (
     <div>
+      <Header></Header>
     <div className="wrapper">
       <AuthContextProvider>
         <Routes>
@@ -24,6 +27,7 @@ function App() {
         </Routes>
       </AuthContextProvider>
     </div>
+    <Footer></Footer>
     </div>
   );
 }
