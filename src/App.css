@@ -119,3 +119,8 @@ body {
   }
 }
 
+#center {
+  width: 100%;
+  text-align: 'center';
+  padding: 2vh !important
+}

@@ -1,6 +1,6 @@
 import '../App.css';
 import * as React from 'react';
-//import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -10,6 +10,8 @@ import Container from '@mui/material/Container';
 import {  ThemeProvider, createTheme } from '@mui/material/styles';
 import { Grid, Avatar, FormControlLabel, Checkbox } from '@mui/material';
 import { Link } from '@mui/material';
+import { AuthContext } from '../contexts/auth'
+import { Navigate } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -18,10 +20,51 @@ function handleSubmit(e) {
 }
 
 function Login() {
+
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
+    const { authTokens, setTokens } = useContext(AuthContext);
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        var myHeaders = new Headers();
+
+        var formdata = new FormData();
+        formdata.append("email", email);
+        formdata.append("password", password);
+
+        var requestOptions = {
+          method: 'POST',
+          "_method": 'PUT',
+          headers: myHeaders,
+          body: formdata,
+          redirect: 'follow'
+        };
+
+        fetch("http://localhost:8000/api/login", requestOptions)
+          .then(response => response.text())
+          .then((result) => {
+            var res= JSON.parse(result);
+            console.log(res);
+            let jwt = res.access_token.plainTextToken;
+            setTokens(jwt);
+          })
+          .catch(error => console.log('error', error));
+    }
+
+    if(authTokens)
+    {
+      return <Navigate to="/"></Navigate>;
+    }
+
     return (
       <div>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
+          <br/>
+          <Link href="/" underline="none"><Button variant="outlined"> Back to Home Page </Button></Link>
           <CssBaseline />
           <Box
             sx={{
@@ -47,6 +90,7 @@ function Login() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                onChange={(e) => {setEmail(e.target.value)}}
               />
               <TextField
                 margin="normal"
@@ -57,6 +101,7 @@ function Login() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={(e) => {setPassword(e.target.value)}}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
