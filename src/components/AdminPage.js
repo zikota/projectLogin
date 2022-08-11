@@ -1,11 +1,14 @@
 import '../App.css';
 import * as React from 'react';
+import Container from '@mui/material/Container';
 
 
 export const AdminPage = () => {
     return (
       <div>
-        Admin page
+        <Container fixed >
+          Users Page
+        </Container>
       </div>
     );
   }

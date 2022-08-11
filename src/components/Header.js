@@ -18,9 +18,9 @@ import { useContext } from 'react';
 import { AuthContext } from '../contexts/auth'
 
 
-const pages = [{ name: 'HomePage', url: '/' }, { name: 'Admin page', url: '/admin' }];
+const pages = [{ name: 'HomePage', url: '/' }, { name: 'Users page', url: '/admin' }];
 const settings = [{ name: 'Registration', url: '/registration' }, { name: 'Login', url: '/login' }, ];
-const settings2 = [{ name: 'Logout', url: '/' }];
+const settings2 = [{ name: 'Logout', url: '/login' }];
 
 
 const ResponsiveAppBar = () => {
