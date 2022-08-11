@@ -12,6 +12,8 @@ import { Grid, Avatar, FormControlLabel, Checkbox } from '@mui/material';
 import { Link } from '@mui/material';
 import { AuthContext } from '../contexts/auth'
 import { Navigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 const theme = createTheme();
 
@@ -24,11 +26,12 @@ function Login() {
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
     const { authTokens, setTokens } = useContext(AuthContext);
+    const [ errors, setErrors ] = useState([]);
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        setErrors([]);
         var myHeaders = new Headers();
 
         var formdata = new FormData();
@@ -47,12 +50,42 @@ function Login() {
           .then(response => response.text())
           .then((result) => {
             var res= JSON.parse(result);
-            console.log(res);
-            let jwt = res.access_token.plainTextToken;
-            setTokens(jwt);
+            if(res.success === true)
+            {
+              let jwt = res.access_token.plainTextToken;
+              setTokens(jwt);
+              setErrors([]);
+            }
+            else {
+              console.log();
+              setErrors(errors => [...errors, { id: 1, msg: res.message}]);
+            }
+            
           })
           .catch(error => console.log('error', error));
     }
+
+    const showErrors = () => {
+      if (errors.length > 0)
+        return (
+          <Stack sx={{ width: '30%', float:'right', bottom: '0' }} spacing={2}>
+            {errors.map((error)=>{
+              return (
+                <Alert variant="outlined" severity="error">
+                  {error.msg}
+                </Alert>
+              )
+            })}
+            
+          </Stack>
+        )
+      else return;
+    }
+
+    
+    useEffect(()=>{
+      showErrors();
+    }, [errors])
 
     if(authTokens)
     {
@@ -62,6 +95,8 @@ function Login() {
     return (
       <div>
       <ThemeProvider theme={theme}>
+        <br/>
+        {showErrors()}
         <Container component="main" maxWidth="xs">
           <br/>
           

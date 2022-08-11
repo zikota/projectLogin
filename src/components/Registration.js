@@ -59,6 +59,7 @@ function Registration() {
           setErrors(errors => [...errors, { id: 6, msg: "Password must contain 8 characters, at least one uppercase letter, at least one lowercase letter, at least 1 numeric character and at least one special character."}]);
           errorsCount++;
         }
+        //console.log(errorsCount);
         if (errorsCount > 0)
           setFormOk(false);
         else 
@@ -70,6 +71,8 @@ function Registration() {
     }, [errors])
 
     useEffect ( () => {
+      
+      console.log('tu sam');
       if(formOk)
       {
         registerUser();
@@ -91,11 +94,23 @@ function Registration() {
         body: formdata,
         redirect: 'follow'
       };
-
+      console.log('aaa');
       fetch("http://localhost:8000/api/register", requestOptions)
         .then(response => response.text())
         .then(result => {
-          console.log(result);
+          var res = JSON.parse(result);
+          console.log(res);
+          if(res.success === true)
+          {
+            setErrors(errors => [...errors, { id: 7, msg: res.message}]);
+            setTimeout(function () {
+              window.location.href = "/login";
+            }, 500);
+          }
+          else {
+            setErrors(errors => [...errors, { id: 8, msg: res.message.email}]);
+            setFormOk(false);
+          }
           
         })
         .catch(error => {
@@ -121,12 +136,11 @@ function Registration() {
           <Stack sx={{ width: '30%', float:'right', bottom: '0' }} spacing={2}>
             {errors.map((error)=>{
               return (
-                <Alert variant="outlined" severity="error">
+                <Alert variant="outlined" severity={ error.id !== 7 ? "error" : "success"}>
                   {error.msg}
                 </Alert>
               )
             })}
-            
           </Stack>
         )
       else return;
@@ -136,7 +150,7 @@ function Registration() {
       <div>
 
         <ThemeProvider theme={theme}>
-          
+        <br/>
         {showErrors()}
             <Container component="main" maxWidth="xs">
               <br/>
