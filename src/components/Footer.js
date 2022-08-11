@@ -40,77 +40,7 @@ const ResponsiveAppBar = () => {
     <AppBar position="static" >
       <Container maxWidth="l" id="appBar-footer">
         <Toolbar disableGutters >
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu PaperProps={{
-            style: {
-                  width: "100%",
-                  maxWidth: "100%",
-                  height: "100%",
-                  left: 0,
-                  right: 0,
-                  backgroundColor: 'white',
-                  color: 'black'
-                }
-              }}
-              id="menu-appbar-mobile"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            > 
-              <Button onClick={handleCloseNavMenu} sx={{float: 'right', color:'black'}}> X </Button>
-              {pages.map((page) => (
-                <Link href={page.url === '/recipes' ? "#" : page.url}  id={ page.url === currentlink.pathname || page.url.includes('recipes') && currentlink.pathname.includes('recipes') ? "selected":"not-selected" } underline="none">
-                <Button
-                  key={page.name}
-                  //onClick={handleCloseNavMenu}
-                  //onClick={(event) => handleMouseEnter(event, page.name)}
-                  sx={{ my: 2, color: 'black', display: 'block', marginLeft: 4 }}
-                >
-                  {page.name}
-                </Button>
-                </Link>
-                /*<MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page.name}</Typography>
-                </MenuItem>*/
-              ))}
-            </Menu>
-          </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              //<Link href={page.url}  underline="none">
-                <Button
-                  key={page.name}
-                  id={ page.url === currentlink.pathname || page.url.includes('recipes') && currentlink.pathname.includes('recipes') ? "selected":"not-selected" }
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  {page.name}
-                </Button>
-              //</Link>
-            ))}
-          </Box>
+          
 
         </Toolbar>
       </Container>

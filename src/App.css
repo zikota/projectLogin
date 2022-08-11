@@ -108,7 +108,7 @@ body {
 }
 
 .wrapper {
-  min-height: 600px;
+  min-height: 800px !important;
   height: auto !important;
   height: 100%;
 }
