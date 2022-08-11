@@ -13,18 +13,29 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from '@mui/material/Link';
 import logo from '../logo5.png'
-import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../contexts/auth'
 
 
-const pages = [{name: 'HomePage', url: '/'}, {name: 'Admin page', url: '/admin'}, {name: 'Registration', url: '/registration'},{name: 'Login', url: '/Login'}, ];
-const settings = [{name: 'Registration', url: '/registration'}, {name: 'Login', url: '/login'}];
+const pages = [{ name: 'HomePage', url: '/' }, { name: 'Admin page', url: '/admin' }];
+const settings = [{ name: 'Registration', url: '/registration' }, { name: 'Login', url: '/login' }, ];
+const settings2 = [{ name: 'Logout', url: '/logout' }];
+
 
 const ResponsiveAppBar = () => {
+  const { authTokens, setTokens } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    setTokens();
+    localStorage.removeItem('tokens');
+  }
+
+  console.log(authTokens);
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [anchorElRecipes, setAnchorElRecipes] = React.useState(null);
-  const [ categories, setCategories ] = useState([]);
+
   const currentlink = useLocation();
 
   const handleOpenNavMenu = (event) => {
@@ -32,9 +43,6 @@ const ResponsiveAppBar = () => {
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-  const handleOpenCategoriesMenu = (event) => {
-    setAnchorElRecipes(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
@@ -45,23 +53,12 @@ const ResponsiveAppBar = () => {
     setAnchorElUser(null);
   };
 
-  const handleCloseCategoriesMenu = () => {
-    setAnchorElRecipes(null);
-  };
-
-  const handleMouseEnter = (event, name) =>{
-    if (name === "Recipes")
-    {
-      handleOpenCategoriesMenu(event);
-    }
-  }
-
   return (
     <AppBar position="static">
       <Container maxWidth="l" id="appBar">
         <Toolbar disableGutters >
           <Link href="/" underline="none">
-          <img src={logo} alt="logo" className="App-logo"></img>
+            <img src={logo} alt="logo" className="App-logo"></img>
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -75,16 +72,16 @@ const ResponsiveAppBar = () => {
               <MenuIcon />
             </IconButton>
             <Menu PaperProps={{
-            style: {
-                  width: "100%",
-                  maxWidth: "100%",
-                  height: "100%",
-                  left: 0,
-                  right: 0,
-                  backgroundColor: 'white',
-                  color: 'black'
-                }
-              }}
+              style: {
+                width: "100%",
+                maxWidth: "100%",
+                height: "100%",
+                left: 0,
+                right: 0,
+                backgroundColor: 'white',
+                color: 'black'
+              }
+            }}
               id="menu-appbar-mobile"
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -102,64 +99,33 @@ const ResponsiveAppBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              <Button onClick={handleCloseNavMenu} sx={{float: 'right', color:'black'}}> X </Button>
+              <Button onClick={handleCloseNavMenu} sx={{ float: 'right', color: 'black' }}> X </Button>
               {pages.map((page) => (
-                <Link href={page.url === '/recipes' ? "#" : page.url} id={ page.url === currentlink.pathname || page.url.includes('recipes') && currentlink.pathname.includes('recipes') ? "selected":"not-selected" } underline="none">
-                <Button
-                  key={page.name}
-                  //onClick={handleCloseNavMenu}
-                  onClick={(event) => handleMouseEnter(event, page.name)}
-                  sx={{ my: 2, color: 'black', display: 'block' }}
-                >
-                  {page.name}
-                </Button>
+                <Link href={page.url === '/recipes' ? "#" : page.url} id={page.url === currentlink.pathname || page.url.includes('recipes') && currentlink.pathname.includes('recipes') ? "selected" : "not-selected"} underline="none">
+                  <Button
+                    key={page.name}
+
+                    sx={{ my: 2, color: 'black', display: 'block' }}
+                  >
+                    {page.name}
+                  </Button>
                 </Link>
               ))}
             </Menu>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Link href={page.url} id={ page.url === currentlink.pathname || page.url.includes('recipes') && currentlink.pathname.includes('recipes') ? "selected":"not-selected" } underline="none">
+              <Link href={page.url} id={page.url === currentlink.pathname || page.url.includes('recipes') && currentlink.pathname.includes('recipes') ? "selected" : "not-selected"} underline="none">
                 <Button
                   key={page.name}
                   onClick={handleCloseNavMenu}
-                  onMouseEnter={(event) => handleMouseEnter(event, page.name)}
+
                   sx={{ my: 2, color: 'white', display: 'block', marginLeft: 4 }}
                 >
                   {page.name}
-                  { ((page.name === 'Recipes') ? '▼' : '')}
+                  {((page.name === 'Recipes') ? '▼' : '')}
                 </Button>
-                {
-                  (page.name === "Recipes") ? 
-                  <Menu
-                    sx={{ mt: '45px' }}
-                    id="menu-appbar3"
-                    anchorEl={anchorElRecipes}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'left',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'left',
-                    }}
-                    open={Boolean(anchorElRecipes)}
-                    onClose={handleCloseCategoriesMenu}
-                    onMouseLeave={handleCloseCategoriesMenu}
-                  >
-                    
-                  <Container maxWidth="l" id="appBar">
-                    {categories.map((category) => (
-                      <MenuItem key={category.name} >
-                        <Link href={`/recipes/${category.name}`} id={ page.url + '/' + category.name === currentlink.pathname ? "selected":"not-selected" } color="white" underline="none">
-                        <Typography className="sub-menu" textAlign="center">{category.name}</Typography>
-                        </Link>
-                      </MenuItem>
-                    ))}
-                    </Container>
-                  </Menu> : ""
-                }
+
               </Link>
             ))}
           </Box>
@@ -185,14 +151,29 @@ const ResponsiveAppBar = () => {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-                  <Link href={setting.url} underline="none">
-                  <Typography textAlign="center">{setting.name}</Typography>
-                  </Link>
-                </MenuItem>
-              ))}
+            > {
+                !authTokens ? 
+                <div>
+                  {settings.map((setting) => (
+                    <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                      <Link href={setting.url} underline="none">
+                        <Typography textAlign="center">{setting.name}</Typography>
+                      </Link>
+                    </MenuItem>
+                  ))}
+                </div> :
+                  <div>
+                    {settings2.map((setting) => (
+                      <MenuItem key={setting.name} onClick={handleLogout}>
+                        <Link href={setting.url} underline="none">
+                          <Typography textAlign="center">{setting.name}</Typography>
+                        </Link>
+                      </MenuItem>
+                    ))}
+                  </div>
+              }
+
+
             </Menu>
           </Box>
         </Toolbar>

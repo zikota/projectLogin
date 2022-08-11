@@ -14,9 +14,10 @@ import Registration from './components/Registration';
 function App() {
   return (
     <div>
+       <AuthContextProvider>
       <Header></Header>
     <div className="wrapper">
-      <AuthContextProvider>
+     
         <Routes>
           <Route exact path="/" element={<HomePage></HomePage>}></Route>
           <Route path="/login" element={<Login></Login>}></Route>
@@ -25,8 +26,9 @@ function App() {
           <Route exact path='/admin' element={<AdminPage/>}/>
           </Route>
         </Routes>
-      </AuthContextProvider>
+     
     </div>
+    </AuthContextProvider>
     <Footer></Footer>
     </div>
   );
