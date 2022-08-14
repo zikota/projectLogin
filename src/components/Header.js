@@ -18,20 +18,22 @@ import { useContext } from 'react';
 import { AuthContext } from '../contexts/auth'
 
 
-const pages = [{ name: 'HomePage', url: '/' }, { name: 'Users page', url: '/admin' }];
+const pages = [{ name: 'HomePage', url: '/', access: '*' }, { name: 'Admin page', url: '/admin', access: '2' }, { name: 'Users Page', url: '/users-page', access: '1' }];
 const settings = [{ name: 'Registration', url: '/registration' }, { name: 'Login', url: '/login' }];
 const settings2 = [ { name: 'My Profile', url: '/my-profile' }, { name: 'Logout', url: '/login' }];
 
 
 const ResponsiveAppBar = () => {
   const { authTokens, setTokens } = useContext(AuthContext);
+  const { isAdmin, setIsAdmin } = useContext(AuthContext);
 
   const handleLogout = () => {
     setTokens();
     localStorage.removeItem('tokens');
+    setIsAdmin(0);
+    localStorage.removeItem('isAdmin');
   }
 
-  console.log(authTokens);
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -101,7 +103,7 @@ const ResponsiveAppBar = () => {
             >
               <Button onClick={handleCloseNavMenu} sx={{ float: 'right', color: 'black' }}> X </Button>
               {pages.map((page) => (
-                <Link href={page.url === '/recipes' ? "#" : page.url} id={page.url === currentlink.pathname || page.url.includes('recipes') && currentlink.pathname.includes('recipes') ? "selected" : "not-selected"} underline="none">
+                <Link href={page.url} id={page.url === currentlink.pathname ? "selected" : "not-selected"} underline="none">
                   <Button
                     key={page.name}
 
@@ -115,7 +117,8 @@ const ResponsiveAppBar = () => {
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Link href={page.url} id={page.url === currentlink.pathname || page.url.includes('recipes') && currentlink.pathname.includes('recipes') ? "selected" : "not-selected"} underline="none">
+              page.access === '*' || page.access === '1' && authTokens || page.access === '2' && authTokens && isAdmin ?
+              <Link href={page.url} id={page.url === currentlink.pathname ? "selected" : "not-selected"} underline="none">
                 <Button
                   key={page.name}
                   onClick={handleCloseNavMenu}
@@ -123,10 +126,10 @@ const ResponsiveAppBar = () => {
                   sx={{ my: 2, color: 'white', display: 'block', marginLeft: 4 }}
                 >
                   {page.name}
-                  {((page.name === 'Recipes') ? '▼' : '')}
                 </Button>
-
-              </Link>
+              </Link> 
+              : 
+              ""
             ))}
           </Box>
 

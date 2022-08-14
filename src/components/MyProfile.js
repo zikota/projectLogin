@@ -24,7 +24,7 @@ export const MyProfile = () => {
   useEffect(() => {
 
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer 6|Qm7qiV58vOLcjrIgrntYcfla74k1CvBFP3BUtqX2");
+    myHeaders.append("Authorization", `Bearer ${authTokens}`);
 
     var requestOptions = {
     method: 'GET',

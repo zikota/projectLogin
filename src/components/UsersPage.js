@@ -3,11 +3,11 @@ import * as React from 'react';
 import Container from '@mui/material/Container';
 
 
-export const AdminPage = () => {
+export const UsersPage = () => {
     return (
       <div>
         <Container fixed >
-          Admin Page
+          Users Page
         </Container>
       </div>
     );

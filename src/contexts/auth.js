@@ -9,17 +9,26 @@ export function useAuth() {
 
 export const AuthContextProvider = (props) => {
   const existingTokens = localStorage.getItem("tokens");
+  const existingIsAdmin = localStorage.getItem("isAdmin");
+
   const [authTokens, setAuthTokens] = useState(existingTokens);
+  const [isAdmin, setAuthIsAdmin] = useState(Number.parseInt(existingIsAdmin, 10));
+
   useEffect(() => {
     apiCall.defaults.headers.common["Authorization"] = `Bearer ${authTokens}`;
   }, [authTokens]);
   const setTokens = (token) => {
-    console.log(token);
     localStorage.setItem("tokens", token);
     setAuthTokens(token);
   };
+
+  const setIsAdmin = (isAdmin) => {
+    localStorage.setItem("isAdmin", isAdmin);
+    setAuthIsAdmin(isAdmin);
+  }
+
   return (
-    <AuthContext.Provider value={{ authTokens, setTokens }}>
+    <AuthContext.Provider value={{ authTokens, setTokens, isAdmin, setIsAdmin }}>
       {props.children}
     </AuthContext.Provider>
   );

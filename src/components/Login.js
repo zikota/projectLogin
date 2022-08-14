@@ -26,6 +26,7 @@ function Login() {
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
     const { authTokens, setTokens } = useContext(AuthContext);
+    const { isAdmin, setIsAdmin } = useContext(AuthContext);
     const [ errors, setErrors ] = useState([]);
 
 
@@ -50,10 +51,13 @@ function Login() {
           .then(response => response.text())
           .then((result) => {
             var res= JSON.parse(result);
+            console.log(res);
             if(res.success === true)
             {
               let jwt = res.access_token.plainTextToken;
+              let isAdmin = res.user.admin;
               setTokens(jwt);
+              setIsAdmin(Number.parseInt(isAdmin, 10));
               setErrors([]);
             }
             else {

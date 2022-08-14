@@ -19,10 +19,10 @@ const theme = createTheme();
 export const PrivateRoute = () => {
 
     const { authTokens } = useContext(AuthContext);
-    console.log(authTokens, 'context');
+    const { isAdmin } = useContext(AuthContext);
 
     return (
-      authTokens ? <Outlet /> : <Navigate to="/login"/>
+      isAdmin ? <Outlet /> : <Navigate to="/"/>
     );
   }
   

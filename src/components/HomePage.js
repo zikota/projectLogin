@@ -11,14 +11,7 @@ const mdTheme = createTheme();
 
 function HomePage() {
   const { authTokens, setTokens } = useContext(AuthContext);
-  
-  const handleLogout = () => {
-    setTokens();
-    localStorage.removeItem('tokens');
-  }
-
-  console.log(authTokens);
-  
+  const { isAdmin, setIsAdmin } = useContext(AuthContext);
   return (
     <ThemeProvider theme={mdTheme}>
         <Container fixed sx={{minHeight: '600px'}}>
