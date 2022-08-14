@@ -8,6 +8,7 @@ import { AdminPage } from './components/AdminPage';
 import { AuthContextProvider } from "./contexts/auth";
 import Header from './components/Header'
 import Footer from './components/Footer'
+import { MyProfile } from './components/MyProfile'
 
 import Registration from './components/Registration';
 
@@ -23,8 +24,9 @@ function App() {
           <Route path="/login" element={<Login></Login>}></Route>
           <Route path="/registration" element={<Registration></Registration>}></Route>
           <Route path="/admin" element={<PrivateRoute></PrivateRoute>}>
-          <Route exact path='/admin' element={<AdminPage/>}/>
+            <Route exact path='/admin' element={<AdminPage/>}/>
           </Route>
+          <Route path="/my-profile" element={<MyProfile></MyProfile>}></Route>
         </Routes>
      
     </div>

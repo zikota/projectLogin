@@ -19,8 +19,8 @@ import { AuthContext } from '../contexts/auth'
 
 
 const pages = [{ name: 'HomePage', url: '/' }, { name: 'Users page', url: '/admin' }];
-const settings = [{ name: 'Registration', url: '/registration' }, { name: 'Login', url: '/login' }, ];
-const settings2 = [{ name: 'Logout', url: '/login' }];
+const settings = [{ name: 'Registration', url: '/registration' }, { name: 'Login', url: '/login' }];
+const settings2 = [ { name: 'My Profile', url: '/my-profile' }, { name: 'Logout', url: '/login' }];
 
 
 const ResponsiveAppBar = () => {
@@ -164,7 +164,7 @@ const ResponsiveAppBar = () => {
                 </div> :
                   <div>
                     {settings2.map((setting) => (
-                      <MenuItem key={setting.name} onClick={handleLogout}>
+                      <MenuItem key={setting.name} onClick={setting.name === "Logout" ? handleLogout : undefined }>
                         <Link href={setting.url} underline="none">
                           <Typography textAlign="center">{setting.name}</Typography>
                         </Link>
