@@ -18,7 +18,7 @@ export const MyProfile = () => {
   const [ lastName, setLastName ] = useState("");
   const [ email, setEmail ] = useState("");
   const [ verified, setVerified ] = useState(0);
-  const [ createdDate, setCreatedDate ] = useState(null);
+  const [ createdDate, setCreatedDate ] = useState("");
   const [ funds, setFunds ] = useState(0);
 
   useEffect(() => {
@@ -41,7 +41,6 @@ export const MyProfile = () => {
         setLastName(res.last_name);
         setEmail(res.email);
         setVerified(res.verified);
-        setCreatedDate(res.created_at.split('T')[0].toString());
         setFunds(res.funds);
     })
     .catch(error => console.log('error', error));
@@ -56,16 +55,27 @@ export const MyProfile = () => {
                     <Avatar sx={{height: '120px', width: '120px'}}>{firstName.charAt(0).toUpperCase()} {lastName.charAt(0).toUpperCase()}</Avatar>
                 </Grid>
                 <Grid item xs={9}>
-                    <Typography textAlign="left" sx={{fontSize: '25px'}}><b>First Name: </b> {firstName}</Typography>
-                    <Typography textAlign="left" sx={{fontSize: '25px'}}><b>Last Name: </b>{lastName}</Typography>
-                    <Typography textAlign="left" sx={{fontSize: '25px'}}><b>Email: </b>{email}</Typography>
-                    <Typography textAlign="left" sx={{fontSize: '25px'}}><b>Created Date: </b>{createdDate}</Typography>
-                    <Typography textAlign="left" sx={{fontSize: '25px'}}><b>Current balance: </b>{funds} €</Typography><br/>
-                    <Badge
-                        badgeContent={ verified ? "Verified" : "Not Verified" }
-                        color={ verified ? "success" : "error" }
-                        sx={{width: '80px', marginLeft: '-42px'}}
-                    />
+                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                    <Grid item xs={4}>
+                        <Typography textAlign="left" sx={{fontSize: '25px'}}>
+                            <b> First Name: </b><br/>
+                            <b>Last Name:  </b><br />
+                            <b>Email: </b><br/>
+                            <b>Current balance: </b>
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Typography textAlign="left" sx={{fontSize: '25px'}}> {firstName}</Typography>
+                        <Typography textAlign="left" sx={{fontSize: '25px'}}>{lastName}</Typography>
+                        <Typography textAlign="left" sx={{fontSize: '25px'}}>{email}</Typography>
+                        <Typography textAlign="left" sx={{fontSize: '25px'}}>{funds} €</Typography><br/>
+                    </Grid>
+                </Grid>
+                    <div
+                        style={{width: '200px', height: '30px', paddingLeft:"5px", color: "white", backgroundColor: verified ? "#92AE32" : "#C60023"}}
+                    >
+                        { verified ? "Verified" : "Not Verified" }
+                    </div>
                 </Grid>
             </Grid>
         </Container>

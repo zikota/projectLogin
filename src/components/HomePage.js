@@ -5,6 +5,8 @@ import { Button } from '@mui/material';
 import Link from '@mui/material/Link';
 import { AuthContext } from '../contexts/auth'
 import Container from '@mui/material/Container';
+import { Grid, Avatar, FormControlLabel, Checkbox } from '@mui/material';
+import image from '../uc.png'
 
 
 const mdTheme = createTheme();
@@ -14,9 +16,10 @@ function HomePage() {
   const { isAdmin, setIsAdmin } = useContext(AuthContext);
   return (
     <ThemeProvider theme={mdTheme}>
-        <Container fixed sx={{minHeight: '600px'}}>
-          HomePage
-        </Container>
+      <br/>
+          <Container fixed>
+              <img src={image} style={{width: '50%', paddingLeft: '25%'}}></img>
+          </Container>
     </ThemeProvider>
   );
 }
